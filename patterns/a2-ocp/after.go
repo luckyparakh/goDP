@@ -28,7 +28,6 @@ import (
 // One question to answer before you write init(): what guarantees the map
 // exists before any init() in the package runs, in whichever file it lives?
 
-// Quote applies the Pricer discount to a list price, both in cents.
 type Pricer = func(int64) int64
 
 var l sync.Mutex
@@ -51,6 +50,7 @@ func init() {
 	register("member", member)
 }
 
+// Quote applies the Pricer discount to a list price, both in cents.
 func Quote(tier string, cents int64) (int64, error) {
 	f, exists := mapper[tier]
 	if !exists {

@@ -30,7 +30,7 @@ and write down what broke. If nothing broke, it was decoration.
 | A9 | The same job as a func type and as a 1-method interface | A benchmark and a written "which would I ship?" |
 | A10 | A type whose zero value is usable | `var c Counter` works with no constructor |
 
-A1 to A5 are ready. A8 kills the most Java habits, so do not skip it.
+A1 to A10 are ready. A8 kills the most Java habits, so do not skip it.
 
 ## Block B: the daily core
 

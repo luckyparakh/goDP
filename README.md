@@ -15,7 +15,7 @@ Each pattern is one folder in `patterns/`: a short `THEORY.md`, `before.go`
 
 ## Status
 
-A1 to A5 (the five SOLID principles) are ready. Everything else is listed in
+Block A (A1 to A10) is ready. Everything else is listed in
 the blueprint and not written yet.
 
 ```bash
