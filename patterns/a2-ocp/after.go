@@ -1,6 +1,9 @@
 package ocp
 
-import "fmt"
+import (
+	"fmt"
+	"sync"
+)
 
 // GOAL
 //
@@ -25,13 +28,22 @@ import "fmt"
 // One question to answer before you write init(): what guarantees the map
 // exists before any init() in the package runs, in whichever file it lives?
 
-// Quote applies the tierType discount to a list price, both in cents.
-type tierType = func(int64) int64
+// Quote applies the Pricer discount to a list price, both in cents.
+type Pricer = func(int64) int64
 
-var mapper map[string]tierType = make(map[string]tierType)
+var l sync.Mutex
+var mapper map[string]Pricer = make(map[string]Pricer)
 
-func register(tier string, tierFunc tierType) {
+func register(tier string, tierFunc Pricer) {
+	if _, e := mapper[tier]; e {
+		panic("tier already exists")
+	}
+
+	// Although here its safe here as register is being called from init only.
+	// And initS are called in seq by GO
+	l.Lock()
 	mapper[tier] = tierFunc
+	l.Unlock()
 }
 
 func init() {

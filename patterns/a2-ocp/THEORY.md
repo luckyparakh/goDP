@@ -6,14 +6,14 @@ Guess before you read on. Wrong guesses are fine. After the task, fill in the
 answers and fix your guesses.
 
 1. To add a student discount to `Price` in `before.go`, which existing code must you edit, and what could you break by accident?
-   - Guess:
-   - Answer:
+   - Guess: I should be editing Price func esp. the swicth case and may existing func or its test case may break. Need to retest each.
+   - Answer: Same as above
 2. How could a new discount be added without touching `Price` at all? One sentence.
-   - Guess:
-   - Answer:
+   - Guess: Create a map of tier name vs fucn name and add a register func. Create a global map and add all func there and call upon from price func depending on tier name.
+   - Answer: Same as above
 3. What does that approach cost you that the `switch` did not?
-   - Guess:
-   - Answer:
+   - Guess: A global variable, extra boilerplate code, less readibilty etc.
+   - Answer: Same as above and also a init func, may be extra files
 
 ## The idea
 
@@ -43,6 +43,32 @@ and no modified files (see the commands in `after.go`).
 New cases almost never arrive. The table is extra machinery, and the rules are
 spread over files instead of sitting in one switch.
 
+## FAQ
+
+**Is a global variable bad? The lookup table is one.**
+
+Usually yes. Mutable global state can be changed by any code, hides a
+dependency, lets tests interfere with each other, depends on initialization
+order, and can race if it is written while being read.
+
+A registry is the accepted exception. The standard library does the same:
+`database/sql` keeps a `drivers` map behind a mutex, and `image.RegisterFormat`
+is a registry too. Treat it as acceptable when all of these hold:
+
+- it is written only during `init()`
+- it is read-only after that
+- it is unexported, with a small `Register` function in front
+- it is locked if writes could ever happen later
+- tests do not need to change it
+
+It is not acceptable for runtime business state, config, caches or counters.
+
+**Can I avoid the global?** Yes. Make a value that owns its own map, build it in
+`main`, and register each tier there. That is easier to test. But you lose the
+part that makes this lesson work: a new file registers itself. A file that
+registers itself needs a package-level table. So you trade the "add a file, edit
+nothing" win for explicitness, and neither choice is free.
+
 ## In the wild
 
 - Standard library: `go doc database/sql.Register`. How does a database driver get added without editing `database/sql`? What happens if two use the same name?
@@ -54,4 +80,4 @@ spread over files instead of sitting in one switch.
 **Try:** put the `switch` back (use `Price`) and add `student` again. Count the
 files you edit.
 
-What got harder or impossible? One line:
+What got harder or impossible? One line: It increased test-radius as existing work also got edited.

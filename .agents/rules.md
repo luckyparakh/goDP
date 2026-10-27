@@ -8,7 +8,7 @@ partly out of date, so read it only when you need the reason behind a decision.
 ## Shape of one pattern
 
 ```
-patterns/<id>/THEORY.md   questions first, then the idea, analogy, "wrong when", "in the wild", delete test
+patterns/<id>/THEORY.md   questions first, then the idea, analogy, "wrong when", optional FAQ, "in the wild", delete test
 patterns/<id>/before.go   the problem, in comments, plus a TRY IT
 patterns/<id>/after.go    a stub that compiles, with the GOAL in comments
 patterns/<id>/<name>_test.go

@@ -21,9 +21,12 @@ Answer in the chat:
 6. **3 questions** for the top of `THEORY.md`, each with the answer you expect.
    The expected answers stay in the spec and never go into the files.
 7. **Wrong when**, and the **delete-test Try** line.
-8. **In the wild:** symbol, source path and book entry. Verify each one by
+8. **FAQ (optional):** one or two questions a learner is likely to ask about a
+   known trade-off, such as "is a global variable bad?". Skip it if there is no
+   real question. See the FAQ rule below.
+9. **In the wild:** symbol, source path and book entry. Verify each one by
    running `go doc`, checking the file under GOROOT, and checking 100go.co.
-9. **Risks and unknowns.** Anything you have not verified.
+10. **Risks and unknowns.** Anything you have not verified.
 
 Then stop and ask for approval. Do not create files.
 
@@ -38,3 +41,16 @@ Then stop and ask for approval. Do not create files.
 4. Hand over with five lines or fewer: what was built and the real check
    output. Add the new row to `BLUEPRINT.md` only if it is missing.
 5. Do not generate the next pattern.
+
+## FAQ rule
+
+A `## FAQ` section is optional. It also gets added later when a learner asks a
+question worth keeping, as happened with the global variable in `a2-ocp`.
+
+- Place it between `## Wrong when` and `## In the wild`.
+- Each entry is a bold question followed by a short answer.
+- **Use bullets, never numbered lists.** `check-pattern.sh` counts lines that
+  start with `1. ` to confirm there are exactly 3 questions, so a numbered list
+  anywhere in `THEORY.md` would break that check.
+- Only state what you checked, with `go doc`, the source, or a run. Say so when
+  it is an opinion, and give both sides of a trade-off.
