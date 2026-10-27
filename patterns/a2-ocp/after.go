@@ -1,5 +1,7 @@
 package ocp
 
+import "fmt"
+
 // GOAL
 //
 // Part 1. Make Quote behave exactly like Price in before.go, but without a
@@ -23,8 +25,33 @@ package ocp
 // One question to answer before you write init(): what guarantees the map
 // exists before any init() in the package runs, in whichever file it lives?
 
-// Quote applies the tier discount to a list price, both in cents.
+// Quote applies the tierType discount to a list price, both in cents.
+type tierType = func(int64) int64
+
+var mapper map[string]tierType = make(map[string]tierType)
+
+func register(tier string, tierFunc tierType) {
+	mapper[tier] = tierFunc
+}
+
+func init() {
+	register("regular", regular)
+	register("member", member)
+}
+
 func Quote(tier string, cents int64) (int64, error) {
-	// TODO
-	return 0, nil
+	f, exists := mapper[tier]
+	if !exists {
+		return 0, fmt.Errorf("no tier name %s, %w", tier, ErrUnknownTier)
+	}
+
+	return f(cents), nil
+}
+
+func regular(cents int64) int64 {
+	return cents
+}
+
+func member(cents int64) int64 {
+	return cents * 90 / 100
 }
