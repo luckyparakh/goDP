@@ -25,10 +25,11 @@ ceremony than the rule itself.
 adapter, a function type with the one method, so a function can still be used
 wherever the interface is expected. Then decide which form you would ship.
 
-**Analogy (home kitchen).** A sticky note that says "add salt" is the function.
-Hiring a trained cook to follow instructions is the interface. For one line, the
-note is enough. For many steps, or a cook with a memory, you hire the cook. An
-adapter is a person who just reads your sticky note out loud.
+**Analogy (one errand).** You need one packet of milk, so you interview and hire
+a full-time cook for it. That is a type with a method for a one-line rule. A chit
+sent with whoever is going out would have done it. When the job really is every
+meal, and it has to remember what is already in the fridge, then you do want the
+cook.
 
 ## How the code shows it
 

@@ -25,9 +25,10 @@ fails at run time. The compiler will not warn you.
 from its zero value, and create anything you need (like a map) at the moment you
 first use it.
 
-**Analogy (plugs and chargers).** A power strip works the moment you plug it in.
-Imagine one that stays dead until you press a hidden setup button. Everyone who
-forgets the button thinks it is broken, and nothing tells them why.
+**Analogy (the extension board).** You plug in the new extension board and
+nothing works, so you assume it is a bad piece. Nobody mentioned the small
+switch on the back that has to be pressed once. A board that just works when
+plugged in has nothing to forget.
 
 ## How the code shows it
 

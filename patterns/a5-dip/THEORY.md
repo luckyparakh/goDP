@@ -46,10 +46,10 @@ and you cannot make it fail the way you want.
 The real file reader, a plain map, or a stand-in that always fails can all
 answer it. The arrow now points up: the supplier fits the need.
 
-**Analogy (power socket).** A lamp asks for "a socket", not for one specific
-generator. So it runs from the grid, an inverter or a test supply, and you can
-practise a power cut by switching the supply. A lamp wired to one generator
-cannot do that.
+**Analogy (water at home).** The washing machine is plumbed straight into the
+borewell. To check what it does when the water stops, you have to actually empty
+the borewell. Give it a normal inlet instead, fed by the borewell, a tanker or a
+bucket, and "no water" becomes a tap you turn off.
 
 ## How the code shows it
 

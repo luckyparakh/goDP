@@ -25,11 +25,11 @@ and every connection, buffer and goroutine it holds stays in use.
 the call chain. The top creates it with a timeout or a cancel. The level that
 actually waits listens for it ending, and stops. The error it returns says why.
 
-**Analogy (home kitchen).** You start dinner and send a friend shopping. If you
-decide to order takeaway, you stick a note on the fridge and everyone checks it
-before starting the next step. An alarm that writes "stop" after 30 minutes
-does the same job without you. Without the note, everyone finishes the job for
-a dinner nobody wants.
+**Analogy (the cancelled order).** You order a cake, so the shop starts baking
+and sends someone out for candles. You cancel ten minutes later, but nobody
+tells the kitchen, so the cake is finished and the candles are bought for a
+party that is off. One cancel slip that every person checks before their next
+step would have stopped all of it at once.
 
 ## How the code shows it
 

@@ -7,21 +7,19 @@ arithmetic becomes testable with no folder, no cleanup and no error path.
 
 ## The everyday version
 
-Picture a single recipe card that also carries your shopping list and the
-washing-up rota. Change the shopping list and you reprint the whole card,
-recipe included. Want to check how much salt the recipe asks for? You still end
-up reading the washing-up rota to get there. Three different people keep asking
-you to change one card.
+The kirana shop writes your bill, files his own copy and updates your khata, all
+in one book, in one go. Ask him just what you owe today and he has to work
+through all three. Change the tax on rice and he rewrites the page that also
+holds your khata.
 
 ## How you'd fix it in real life
 
-Use three cards: the recipe, the shopping list, the rota. Now the shopping list
-changes without touching the recipe, and checking the salt means reading one
-short card.
+Keep three books: the bill, his copy, your khata. Now a tax change touches one
+page, and "what do I owe?" is answered from one book without opening the others.
 
-> Where this analogy breaks: reprinting a card is slow but safe. Editing a
-> shared function is fast and can silently break every other caller, which a
-> recipe card can't do.
+> Where this analogy breaks: rewriting a page is slow but safe. Editing a shared
+> function is fast and can silently break every other caller, which a page in a
+> book cannot do.
 
 ## The same pain, in code
 

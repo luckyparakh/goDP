@@ -1,5 +1,7 @@
 package isp
 
+import "fmt"
+
 // GOAL
 //
 // Welcome does the same job as WelcomeFat, but depends only on what it uses.
@@ -12,11 +14,14 @@ package isp
 
 // UserGetter is the small dependency of Welcome.
 type UserGetter interface {
-	// TODO
+	GetUser(id string) (User, error)
 }
 
 // Welcome greets the user with the given id.
 func Welcome(g UserGetter, id string) (string, error) {
-	// TODO
-	return "", nil
+	u, err := g.GetUser(id)
+	if err != nil {
+		return "", fmt.Errorf("welcome %q: %w", id, err)
+	}
+	return "Welcome, " + u.Name + "!", nil
 }

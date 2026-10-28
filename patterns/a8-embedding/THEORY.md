@@ -26,10 +26,10 @@ what the outer type replaced.
 behaviour in explicitly, for example as an interface. Use embedding for what it
 does well: forwarding many methods for free, and replacing just one.
 
-**Analogy (home kitchen).** A lunchbox has a sandwich inside. You can eat the
-sandwich straight from the box, so it feels like the box is a sandwich. It is
-not. If the sandwich has a note that says "add the filling", it adds its own
-filling, even when you taped a different one to the box.
+**Analogy (the tiffin).** A tiffin carrier has a dabba of dal inside. You eat
+the dal straight from the carrier, so it starts to feel like the carrier *is*
+the dal. It is not. Ask the dal what it is and it answers "dal", whatever you
+wrote on the sticker outside the carrier.
 
 ## How the code shows it
 

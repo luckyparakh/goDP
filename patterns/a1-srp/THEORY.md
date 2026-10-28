@@ -38,10 +38,11 @@ the others, including their failures.
 **Fix.** Split by *reason to change*. One piece adds up, one builds the text,
 one saves. Each can be changed and tested alone.
 
-**Analogy (home kitchen).** Imagine one recipe card that also holds your
-shopping list and the washing-up rota. To change the shopping list you reprint
-the whole card. To check the salt in the recipe you have to do the washing-up.
-Three separate cards fix that.
+**Analogy (the shop bill).** The kirana shop writes your bill, files his copy
+and updates your khata, all in one book, in one go. Ask him just what you owe
+and he has to work through all three. Change the tax on rice and he rewrites the
+page that also holds your khata. Three separate books, and each question takes
+one.
 
 ## How the code shows it
 

@@ -39,9 +39,10 @@ to re-check every old case, in case the edit broke one.
 **Fix.** Keep the cases in a lookup table that other code adds to. A new case
 is a new entry in a new file, and no existing code is edited.
 
-**Analogy (power strip).** A lamp wired straight into the wall: to add a fan
-you open the wall. A power strip with free sockets: the new gadget just plugs
-in and nothing is rewired.
+**Analogy (the extension board).** The fan is wired straight into the wall, so
+adding a lamp means opening up the wall and disturbing wiring that already
+works. Plug in an extension board once, and the next thing just goes into a free
+socket.
 
 ## How the code shows it
 

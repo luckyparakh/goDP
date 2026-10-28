@@ -21,7 +21,7 @@ Answer in the chat:
 4. **after.go stub:** the exact signatures. It must compile.
 5. **Tests:** names `TestBefore_*` and `TestAfter_*`, and what each checks. Say
    which fail at the start.
-6. **Analogy:** 3 to 4 plain sentences, within the domain rules.
+6. **Analogy:** see the analogy rule below.
 7. **3 questions** for the top of `THEORY.md`, each with the answer you expect.
    The expected answers stay in the spec and never go into the files.
 8. **Wrong when**, and the **delete-test Try** line.
@@ -45,6 +45,30 @@ Then stop and ask for approval. Do not create files.
 4. Hand over with five lines or fewer: what was built and the real check
    output. Add the new row to `BLUEPRINT.md` only if it is missing.
 5. Do not generate the next pattern.
+
+## Analogy rule
+
+Pick whatever everyday situation fits the task best. There is no central story
+and no fixed set of domains.
+
+- **Pain in the first sentence.** Never describe the fix before the reader has
+  felt the problem. This is the mistake to check for first, and the one that
+  spoiled the first versions of A4, A5 and A9.
+- **One situation, not a list.** If it takes four example items to work, it is
+  too complicated. The reader should picture one thing.
+- **Three or four short sentences.** Longer means the idea is not clear yet.
+- **Everyday things the learner actually touches.** The learner is in India, so
+  prefer what is ordinary there: a gate register, a borewell or water tanker, an
+  auto, a tiffin, an extension board, a chit sent with someone. Avoid anything
+  regional to somewhere else. "Boiler" and "bin day" were real rejections.
+- **No word should need explaining.** If you have to gloss a term, pick a
+  different situation.
+- **Carry the task's sharpest point, not just the shape.** Read the proof the
+  test gives and make sure the analogy shows that same thing. A4's point is that
+  the big implementation still satisfies the small interface, so the analogy has
+  to say that anyone who can fill the register can write their name.
+- **Label it and keep it hypothetical.** It illustrates, and never asserts a
+  fact about the real world.
 
 ## General-layer rule
 
