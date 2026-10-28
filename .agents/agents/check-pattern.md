@@ -24,6 +24,7 @@ Run `bash .agents/scripts/check-pattern.sh <id> <mode>` and paste the output.
 | e | "In the wild": run `go doc <symbol>`. The book entry matches the title and number on https://100go.co if you can fetch it, or it says "none verified yet". |
 | f | The pattern has a row in `BLUEPRINT.md` and its proof matches the test. |
 | g | Concurrency only: `go test -race -count=50 -shuffle=on ./patterns/<id>/`. Report flaky tests. |
+| h | `THEORY.md` explains the **principle**, not only this code's problem. It must name the principle, give the classic formulation, and say what changes in Go. Ask yourself: could a learner who searched the web for this principle's name map what they found onto this task? If the task's mechanism is not obviously the principle, the file must spell out the chain between them. Only skip this for a task with no named principle behind it. |
 
 ## 3. Report
 

@@ -15,6 +15,27 @@ answers and fix your guesses.
    - Guess:
    - Answer:
 
+## What the principle says
+
+**Dependency Inversion Principle**, from Robert C. Martin: high-level code
+should not depend on low-level code, and both should depend on an abstraction.
+The "inversion" is the direction of that dependency. Normally the policy reaches
+down and grabs a mechanism. Inverted, the mechanism fits an abstraction that the
+policy side owns.
+
+**It is not dependency injection.** Injection is the technique of handing a
+dependency in, through a constructor or a parameter. Inversion is about *who
+owns the interface*. You can inject a dependency and still have it backwards, if
+the interface is declared by whoever provides it.
+
+In Go, that ownership is the whole mechanism: the consumer declares the
+interface in its own package, so the import arrow points from the provider to
+the consumer instead of the other way round.
+
+The usable question is: *who owns the interface, the user or the provider?*
+
+Cross-principle view: [SOLID.md](../SOLID.md).
+
 ## The idea
 
 **Problem.** The code that decides what to do reaches down and grabs the

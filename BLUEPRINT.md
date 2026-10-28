@@ -32,6 +32,10 @@ and write down what broke. If nothing broke, it was decoration.
 
 A1 to A10 are ready. A8 kills the most Java habits, so do not skip it.
 
+A1 to A5 are the five SOLID principles, one task each. Each task explains its own
+principle, so start with the task. For the view across all five, which is where
+the blast-radius framing lives, see [patterns/SOLID.md](patterns/SOLID.md).
+
 ## Block B: the daily core
 
 | ID | Task | Proof |

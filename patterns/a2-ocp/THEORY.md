@@ -15,6 +15,22 @@ answers and fix your guesses.
    - Guess: A global variable, extra boilerplate code, less readibilty etc.
    - Answer: Same as above and also a init func, may be extra files
 
+## What the principle says
+
+**Open/Closed Principle**, from Bertrand Meyer (1988): software should be open
+for extension but closed for modification. You should be able to add behaviour
+without editing what is already there.
+
+Meyer's original version extended by subclassing. Go has no inheritance, so the
+extension point has to be something else: a function value, an interface, or a
+lookup table that new code adds itself to. This task uses the lookup table.
+
+The cost is that you must build the extension point *before* you need it, which
+is why chasing this principle directly tends to produce abstraction nobody asked
+for. The usable question is: *to add a case, do I add or do I modify?*
+
+Cross-principle view: [SOLID.md](../SOLID.md).
+
 ## The idea
 
 **Problem.** A new case means editing code that already works. You then have

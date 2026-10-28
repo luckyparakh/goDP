@@ -73,6 +73,18 @@ func (s writeOnce) Put(k, v string) error {
 	return s.Store.Put(k, v)
 }
 
+// promise 1 again, the subtle one: it does report an error for a missing key,
+// but not ErrNotFound. Callers that ask errors.Is(err, ErrNotFound) get false.
+type wrongError struct{ Store }
+
+func (s wrongError) Get(k string) (string, error) {
+	v, err := s.Store.Get(k)
+	if errors.Is(err, ErrNotFound) {
+		return "", errors.New("record absent")
+	}
+	return v, err
+}
+
 type keepsFirst struct{ Store } // promise 5: overwrite is silently ignored
 
 func (s keepsFirst) Put(k, v string) error {
@@ -85,6 +97,7 @@ func (s keepsFirst) Put(k, v string) error {
 func TestAfter_CatchesEachBrokenPromise(t *testing.T) {
 	mutants := map[string]func() Store{
 		"promise 1 (missing key)":        NewLying,
+		"promise 1 (wrong error)":        func() Store { return wrongError{NewGood()} },
 		"promise 2 (put fails)":          func() Store { return putFails{NewGood()} },
 		"promise 3 (get after put)":      func() Store { return forgetful{NewGood()} },
 		"promise 4 (overwrite succeeds)": func() Store { return writeOnce{NewGood()} },

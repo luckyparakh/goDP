@@ -15,6 +15,23 @@ answers and fix your guesses.
    - Guess:
    - Answer:
 
+## What the principle says
+
+**Interface Segregation Principle**, from Robert C. Martin: clients should not
+be forced to depend on methods they do not use. A wide interface gets split into
+the narrow roles that callers actually need.
+
+Where a type must declare which interfaces it implements, that split is the
+provider's decision and costs real work. Go satisfies interfaces implicitly, so
+the *consumer* can declare the narrow interface it needs and every existing type
+fits it unchanged. That makes this principle close to free in Go, and it is the
+idea behind the Go proverb "the bigger the interface, the weaker the
+abstraction".
+
+The usable question is: *do I depend on more than I use?*
+
+Cross-principle view: [SOLID.md](../SOLID.md).
+
 ## The idea
 
 **Problem.** A function asks for a big interface but uses one method of it.

@@ -15,6 +15,19 @@ answers and fix your guesses.
    - Guess: More boilerplate 
    - Answer: Now some other func, has to create a pipeline to call total -> render -> save
 
+## What the principle says
+
+**Single Responsibility Principle.** Usually stated as: a module should have one
+reason to change. The catch is that nobody agrees what "a responsibility" is, so
+the rule cannot be checked as written. The usable version is a question: *how
+many different requirements would make me edit this?* Two different requirements
+means two reasons to change, and that is where the split goes.
+
+Nothing about this is Go-specific. The principle was written about classes, and
+Go has no classes, so read "module" as a function, a type or a package.
+
+Cross-principle view: [SOLID.md](../SOLID.md).
+
 ## The idea
 
 **Problem.** One function does several different jobs. Each job has its own
