@@ -1,5 +1,9 @@
 package dip
 
+import (
+	"fmt"
+)
+
 // GOAL
 //
 // Greeter does the same job as FileService, but this file must not import
@@ -20,7 +24,8 @@ package dip
 
 // Users is what Greeter needs from the outside world.
 type Users interface {
-	// TODO
+	// Gives clean name, clean to be done by provider
+	Name(id string) (string, error)
 }
 
 // Greeter greets users fetched through Users.
@@ -28,12 +33,16 @@ type Greeter struct{ users Users }
 
 // NewGreeter wires a Greeter to a source of users.
 func NewGreeter(u Users) *Greeter {
-	// TODO
-	return &Greeter{}
+	return &Greeter{
+		users: u,
+	}
 }
 
 // Greeting returns "Hello, <name>!" for the user with the given id.
 func (g *Greeter) Greeting(id string) (string, error) {
-	// TODO
-	return "", nil
+	u, err := g.users.Name(id)
+	if err != nil {
+		return "", fmt.Errorf("greeting %q: %w", id, err)
+	}
+	return "Hello, " + u + "!", nil
 }

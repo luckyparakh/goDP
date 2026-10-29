@@ -12,3 +12,4 @@ Next: **A1 (SRP)**
 | 2  | 27/10 | Didn;t added lock while writing dict, name chose were not good, and didn't added the condition to avoid duplicate tier addition |                     |
 | 3  | 27/10 | Missed to check sentinal error, wrote not a clean code, like error message can be more informative                              |                     |
 | 4  | 28/10 | Used %s in place %q, error wrap will have not needed info as I have added "error while getting user %w, err"                              |                     |
+| 5  | 29/10 | Used strings pkg to trim, its like leak provider should clean and provide output, consumer should use it as it is.                              |                     |

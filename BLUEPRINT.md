@@ -1,4 +1,4 @@
-# BLUEPRINT: the 40 tasks
+# BLUEPRINT: the 43 tasks
 
 How to do a task is in [HOWTO.md](HOWTO.md). This file is only the list.
 
@@ -14,6 +14,106 @@ solutions/<id>/after.go      sealed: the finished code and why it works
 
 A pattern counts as learned when a test proves it. After it works you delete it
 and write down what broke. If nothing broke, it was decoration.
+
+## Capstones: one per block
+
+Separate tasks do not teach assembly. You can finish ten patterns and still not
+know how they fit together. Each block ends with one small program that only
+works if most of that block works.
+
+A capstone is scaffolded differently from a pattern:
+
+```
+capstones/<id>/README.md        the proofs, written as commands
+capstones/<id>/<name>_test.go   the same proofs, as tests that fail
+capstones/<id>/types.go         interfaces and structs, declared and empty
+capstones/<id>/fake.go          a fake for the slow dependency, so tests cost nothing
+capstones/<id>/*.go             stubs: panic("write me")
+```
+
+**No sealed solution.** A pattern has one shape worth copying; a capstone has
+many. A sealed answer here would say there is one right design, and there is not.
+
+**Three capstones, not six.** Not every block has enough meat for its own, and a
+capstone invented to fill a slot is decoration.
+
+| # | After | Name | What it is |
+|---|---|---|---|
+| **K1** | A + B + C | **The service** | One HTTP service: interfaces owned by the caller, a swappable store behind an adapter, a middleware chain, everything wired in `main`, nothing constructible in an invalid state |
+| **K2** | D | **The keeper** | A program that keeps something the way you want it. Defined below |
+| **K3** | E + F | **The restructure** | Take K1 back out. Add explicit states, a handler chain and a cache in front of the slow step. Then do F4's hexagonal restructure on it |
+
+Why these groupings:
+
+- **A cannot stand alone.** Its patterns are all shape, with no runtime behaviour.
+  They only prove themselves once something uses them.
+- **C is three tasks**, one of them written-only. Folding it into K1 is honest;
+  giving it a capstone is ceremony.
+- **D stands alone.** Twelve tasks, and the only block about behaviour over time.
+- **F4 already is a capstone.** Pointing it at K1 means K1 was never throwaway,
+  and E's patterns are what you add while restructuring it.
+
+**You build three things, but only two are new.** K3 is K1 revisited months later
+by a better engineer. That is the one worth showing somebody.
+
+**Only K2 is designed below.** Designing K1 and K3 before you have done their
+blocks is planning, and planning is cheaper than building, which is why it wins.
+One sentence each when you get there.
+
+**Cost, estimated and not measured.** Roughly 78 h for the 39 remaining tasks and
+40 to 46 h for the three capstones, after subtracting F4 which is already counted
+as a task. Call it 120 to 125 h: about 13 weeks at 10 h/week, or 21 at 6. The
+capstones are half the budget. That is the point of them, not an overrun.
+
+### K2 — the Block D capstone
+
+You write down what you **want** in a small config file. The program looks at
+what is **actually** there. Where they differ, it makes one slow call that
+sometimes fails, to close the gap. It runs in a loop, and **you can kill it at
+any moment and restart it without breaking anything.**
+
+That last sentence is the point. A demo runs once on a good day. This is defined
+by what happens when things go wrong.
+
+The slow call is anything slow and unreliable: an HTTP fetch, an image resize, a
+shell command, a model. A fake is the default, so the tests need no network and
+no account.
+
+Pick the thing that annoys you most in real life. Every folder in your notes has
+a current summary · every saved link has a title and tags · every receipt in
+Downloads is renamed and filed. The shape is the same in all of them.
+
+| What the program forces you to get right | Task |
+|---|---|
+| Restart safely at any moment: compare wanted against actual, do not react to events | D11 |
+| The call is expensive and sometimes times out: never redo finished work | D9 |
+| Many items, but the far end has a limit: a fixed number of workers | D2 |
+| Ctrl-C finishes cleanly; every call has a deadline | A7 |
+| Prove the workers actually stopped | D1 |
+| "Busy, retry" and "bad input, stop" are different | A6 |
+| Two runs writing the same state file | D10 |
+| Two copies running, only one allowed to act | D12 |
+| Swap the slow thing for a fake | A5 |
+
+Nine for nine. If a piece could be removed and it still worked, it was decoration.
+
+**Done means these. Each is a command, not a judgement:**
+
+1. Kill it halfway, restart: it finishes what is left and does **not** redo what is done
+2. Run two copies at once: only one does work
+3. Make the fake fail half the time: it still finishes, with no duplicates
+4. Delete one output: the next pass regenerates **only that one**
+5. Change one input: **only that one** is redone
+6. `go test -race` clean; the goroutine count returns to where it started
+7. The whole suite runs against the fake: no network, no account, no cost
+
+My estimate is 18 to 20 hours for all seven. The smallest honest version is about
+6 hours — config, compare, fake, idempotency, one worker, no leader election —
+which already passes proofs 1, 4 and 5, and is already more than most demos do.
+Grow it one proof at a time. Not measured.
+
+**Do not design it before D12 passes.** Write one sentence naming what it keeps
+in order, and nothing else.
 
 ## Block A: foundations
 
@@ -59,7 +159,7 @@ the blast-radius framing lives, see [patterns/SOLID.md](patterns/SOLID.md).
 
 | ID | Task | Proof |
 |---|---|---|
-| D1 | A goroutine-leak harness, reused in D2 to D9 | `runtime.NumGoroutine()` before and after, with a settle period |
+| D1 | A goroutine-leak harness, reused in D2 to D12 | `runtime.NumGoroutine()` before and after, with a settle period |
 | D2 | A bounded worker pool | An atomic gauge: max in flight never exceeds N |
 | D3 | Pipeline with fan-out and fan-in | `-race` clean, and every stage exits on cancel |
 | D4 | `errgroup.WithContext` | The first error cancels siblings |
@@ -68,10 +168,22 @@ the blast-radius framing lives, see [patterns/SOLID.md](patterns/SOLID.md).
 | D7 | A rate limiter (token bucket) | The rate is not exceeded over a measured window |
 | D8 | A circuit breaker: closed, open, half-open | A table-driven transition test |
 | D9 | Retry, backoff, jitter and an idempotency key | No double write after a retried, ambiguous failure |
+| D10 | Optimistic concurrency: a version, not a lock | A stale write returns `ErrConflict`; no update is silently lost |
+| D11 | Reconcile: compare desired to actual, do not react to events | State is still correct after an event is dropped |
+| D12 | Leader election with an expiring lease | One worker acts per tick; another takes over when the holder stops renewing |
 
 D1 comes first. Without a leak test every later proof here is a guess.
 `errgroup` and `singleflight` live in `golang.org/x/sync`, which is not in the
 standard library.
+
+D10 to D12 are the three ideas any system uses to coordinate more than one copy
+of itself: a version check, a loop that closes the gap, and a lease that expires
+on its own. Plain Go, standard library only, nothing to install. Do them in
+order — D12's failover test is easier once D10 has taught you what a conflict is.
+
+Each one starts from a bug you can watch happen: D10 loses an update, D11 is
+wrong forever after one missed event, D12 does the work three times. The failing
+behaviour is the specification.
 
 ## Block E: structure
 
@@ -122,6 +234,10 @@ Not mapped yet: A1, A3, and the other two books. The chapter list for
   packages*, which A5 does not cover.
 - The old estimate of 40 to 60 hours was for 39 tasks and has not been
   re-measured.
+- D10, D11 and D12 were added on 29/10/2026, taking the count from 40 to 43.
+  Block D stopped at retry and idempotency, which left out the three things a
+  service needs once there is more than one copy of it running. My estimate is
+  2 to 3 hours for D10 and 4 to 5 each for D11 and D12. Not measured.
 
 ## Know the name, rarely write it in Go
 
@@ -143,4 +259,7 @@ literal or functional options. Template Method is a func you pass in.
 | N identical concurrent requests hitting the DB | singleflight or a cache |
 | An unbounded `go func()` inside a loop | Worker pool |
 | Retry wrapped around a write with no key | An idempotency key (fix that before retrying) |
+| Two writers, last one wins, and nothing returns an error | Optimistic concurrency: a version on the record |
+| A handler that patches state in response to each event | Reconcile: compare desired to actual instead |
+| Every replica running the same periodic job | Leader election: one lease, one actor |
 | **An interface with one implementation and one caller** | **Nothing. Delete the interface.** |
