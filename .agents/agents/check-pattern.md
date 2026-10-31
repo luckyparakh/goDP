@@ -17,7 +17,7 @@ Run `bash .agents/scripts/check-pattern.sh <id> <mode>` and paste the output.
 
 | # | Check |
 |---|---|
-| a | `THEORY.md` is plain English. Jargon is explained or avoided. The analogy is 3 to 4 sentences, stays within the allowed domains, and makes no claim about the real world. |
+| a | `THEORY.md` is plain English. Jargon is explained or avoided. The analogy is 3 to 4 sentences, stays within the allowed domains, and makes no claim about the real world. People really behave the way the story says. The "before" version loses something in the story that someone needs, and that loss matches what the `TestBefore_*` tests prove. |
 | b | No spoilers. `after.go` and `THEORY.md` do not contain the solution's key code. Compare with `solutions/<id>/`. |
 | c | `before.go`: the PROBLEM and TRY IT make sense, and every claim in the comments is true. Run what you can to prove it. |
 | d | The 3 questions can each be answered with a guess, and the `Questions first` section does not give the answers away. |

@@ -1,5 +1,7 @@
 package errs
 
+import "fmt"
+
 // GOAL
 //
 // Three layers call each other: Handle calls Load, and Load calls Get. Make
@@ -19,18 +21,30 @@ package errs
 
 // Get looks the order up. It is the bottom layer.
 func Get(id string) (string, error) {
-	// TODO
-	return "", nil
+	if id == "" {
+		return "", &ValidationError{Field: "id", Reason: "must not be empty"}
+	}
+	v, ok := orders[id]
+	if !ok {
+		return "", ErrNotFound
+	}
+	return v, nil
 }
 
 // Load calls Get and adds context to any error.
 func Load(id string) (string, error) {
-	// TODO
-	return "", nil
+	v, err := Get(id)
+	if err != nil {
+		return "", fmt.Errorf("load %q: %w", id, err)
+	}
+	return v, nil
 }
 
 // Handle calls Load and adds context to any error. It is the top layer.
 func Handle(id string) (string, error) {
-	// TODO
-	return "", nil
+	v, err := Load(id)
+	if err != nil {
+		return "", fmt.Errorf("handle: %w", err)
+	}
+	return v, nil
 }

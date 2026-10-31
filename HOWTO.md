@@ -8,7 +8,7 @@ example `a1-srp`.
 | 1 | Answer the 3 questions with a **guess**. Do not look anything up. Wrong is fine | `patterns/<id>/THEORY.md` |
 | 2 | Read the rest of the theory. About 3 minutes | same file |
 | 3 | Read the PROBLEM comment, do TRY IT, then run `go test ./patterns/<id>/` | `before.go` |
-| 4 | Write `after.go` until every test passes | `after.go` |
+| 4 | Write `after.go`, or the files its GOAL names, until every test passes | `after.go` |
 | 5 | Open the solution and compare. Read HOW, WHY and WHEN NOT | `solutions/<id>/after.go` |
 | 6 | Fill in the **Answer** lines and fix your guesses. Do the delete test (one line). Add a row to the log | `THEORY.md`, then `PROGRESS.md` |
 
@@ -45,6 +45,7 @@ and each one shows something awkward.
 | Command | What it does |
 |---|---|
 | `go test ./patterns/<id>/` | Run one pattern's tests. Use this loop |
+| `go test ./patterns/<id>/...` | The same, for a task with subfolders (B1, B2, B5) |
 | `go test -race ./patterns/<id>/` | Also required for every concurrency task |
 | `gofmt -l .` | Lists badly formatted files. Should print nothing |
 | `go vet ./...` | Should print nothing |

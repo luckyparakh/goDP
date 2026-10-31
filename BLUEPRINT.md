@@ -147,6 +147,9 @@ the blast-radius framing lives, see [patterns/SOLID.md](patterns/SOLID.md).
 | B5 | Composition root: wire handler, service and store in `main` | `grep` shows no package builds its own dependencies |
 | B6 | Null object: a no-op logger or metrics recorder | Zero nil checks, and a benchmark shows the no-op is cheap |
 
+B1 to B6 are ready. B1, B2 and B5 have `before/` and `after/` subfolders, because
+they are about imports between packages: run them with `go test ./patterns/<id>/...`.
+
 ## Block C: construction
 
 | ID | Task | Proof |

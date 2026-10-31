@@ -36,8 +36,10 @@ Then stop and ask for approval. Do not create files.
 
 ## Phase 2: build (after approval)
 
-1. Create the five files from the shape in `rules.md`. Write the sealed solution
-   with `//go:build ignore` on the first line and a blank second line.
+1. Create the five files from the shape in `rules.md`, or the multi-package
+   shape described there when the task is about packages. Write every sealed
+   solution file with `//go:build ignore` on the first line and a blank second
+   line.
 2. Run `gofmt -l .`, `go vet ./...` and
    `bash .agents/scripts/check-pattern.sh <id> start` until it says PASS.
 3. For a concurrency task also run `go test -race -count=50 -shuffle=on ./patterns/<id>/`
@@ -63,10 +65,23 @@ and no fixed set of domains.
   regional to somewhere else. "Boiler" and "bin day" were real rejections.
 - **No word should need explaining.** If you have to gloss a term, pick a
   different situation.
+- **People already do this.** Every action in the story is something people
+  really do in that situation. If you had to invent a behaviour so it looks like
+  the code, pick another situation. A6's first version had people relaying "no
+  rice" by sticking notes on top of notes. Nobody does that.
 - **Carry the task's sharpest point, not just the shape.** Read the proof the
   test gives and make sure the analogy shows that same thing. A4's point is that
   the big implementation still satisfies the small interface, so the analogy has
   to say that anyone who can fill the register can write their name.
+- **The bad version must really hurt in the story.** Tell the "before" version
+  inside the story and check that someone actually loses something they need.
+  If a person would shrug, the analogy teaches the opposite. A6's rice note
+  failed this: reword "no rice" and the fact survives, so rewording looks
+  harmless, when the whole point is that the text survives and the error does
+  not.
+- **Map it before you write it.** In the spec, give a small table: each key code
+  piece (the bad move, the fix, what the test proves) against its part of the
+  story. If a row is empty or forced, change the situation, not the wording.
 - **Label it and keep it hypothetical.** It illustrates, and never asserts a
   fact about the real world.
 

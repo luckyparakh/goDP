@@ -15,8 +15,8 @@ Each pattern is one folder in `patterns/`: a short `THEORY.md`, `before.go`
 
 ## Status
 
-Block A (A1 to A10) is ready. Everything else is listed in
-the blueprint and not written yet.
+Block A (A1 to A10) and Block B (B1 to B6) are ready. Everything else is listed
+in the blueprint and not written yet.
 
 ```bash
 go test ./patterns/a1-srp/     # start here

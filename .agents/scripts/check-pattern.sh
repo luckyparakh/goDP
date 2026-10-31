@@ -7,6 +7,11 @@
 #
 # Changes nothing in the repo. The sealed solution is checked in a throwaway
 # module in the system temp folder. Needs git, go and a POSIX shell.
+#
+# A pattern may have subpackages (before/, after/ and so on). Everything is
+# checked recursively, and the throwaway module uses the real module path with
+# the pattern at its real path, so imports between subpackages still resolve.
+# Solution files overlay the pattern by their path relative to solutions/<id>/.
 set -u
 
 id="${1:-}"
@@ -37,10 +42,10 @@ if [ -f "$s/after.go" ]; then pass "$s/after.go exists"; else fail "$s/after.go 
 echo "== format and vet =="
 out="$(gofmt -l "$p" "$s" 2>&1)"
 if [ -z "$out" ]; then pass "gofmt clean"; else fail "gofmt lists: $out"; fi
-if out="$(go vet "./$p/" 2>&1)"; then pass "go vet clean"; else fail "go vet: $out"; fi
+if out="$(go vet "./$p/..." 2>&1)"; then pass "go vet clean"; else fail "go vet: $out"; fi
 
 echo "== test state ($mode) =="
-res="$(go test -count=1 -v "./$p/" 2>&1)"
+res="$(go test -count=1 -v "./$p/..." 2>&1)"
 if echo "$res" | grep -qE '\[build failed\]|\[setup failed\]'; then
   fail "tests do not compile"
   echo "$res" | head -20
@@ -62,8 +67,8 @@ else
 fi
 
 echo "== sealed solution =="
-for f in "$s"/*.go; do
-  [ -f "$f" ] || continue
+sol_files="$(find "$s" -type f -name '*.go' 2>/dev/null | sort)"
+for f in $sol_files; do
   if [ "$(sed -n 1p "$f")" = "//go:build ignore" ] && [ -z "$(sed -n 2p "$f")" ]; then
     pass "$f starts with //go:build ignore and a blank line"
   else
@@ -74,11 +79,16 @@ tmp="$(mktemp -d)"
 log="$(mktemp)"
 trap 'rm -rf "$tmp" "$log"' EXIT
 gov="$(awk '/^go /{print $2}' go.mod)"
-printf 'module solcheck\n\ngo %s\n' "$gov" > "$tmp/go.mod"
-cp "$p"/*.go "$tmp/"
-for f in "$s"/*.go; do
-  [ -f "$f" ] && sed '1,2d' "$f" > "$tmp/$(basename "$f")"
+mod="$(awk '/^module /{print $2}' go.mod)"
+printf 'module %s\n\ngo %s\n' "$mod" "$gov" > "$tmp/go.mod"
+mkdir -p "$tmp/$p"
+cp -R "$p"/. "$tmp/$p/"
+for f in $sol_files; do
+  rel="${f#"$s"/}"
+  mkdir -p "$tmp/$p/$(dirname "$rel")"
+  sed '1,2d' "$f" > "$tmp/$p/$rel"
 done
+export GOWORK=off
 if (cd "$tmp" && go vet ./... && go test -count=1 -race ./...) >"$log" 2>&1 \
   || { grep -q 'requires cgo' "$log" && (cd "$tmp" && go test -count=1 ./...) >"$log" 2>&1; }; then
   pass "solution passes (before.go + tests + solution files)"
@@ -113,7 +123,7 @@ if [ -f "$t" ]; then
 fi
 
 echo "== spoiler guard =="
-if grep -qE 'HOW IT WORKS|WHEN NOT TO USE' "$p/after.go" "$p/before.go" "$p/THEORY.md" 2>/dev/null; then
+if grep -rqE --include='*.go' --include='THEORY.md' 'HOW IT WORKS|WHEN NOT TO USE' "$p" 2>/dev/null; then
   fail "solution headings found outside solutions/"
 else
   pass "no solution headings outside solutions/"
